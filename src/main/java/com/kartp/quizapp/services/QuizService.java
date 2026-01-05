@@ -4,7 +4,7 @@ import com.kartp.quizapp.dao.QuizDao;
 import com.kartp.quizapp.model.Question;
 import com.kartp.quizapp.model.QuestionWrapper;
 import com.kartp.quizapp.model.Quiz;
-import org.apache.coyote.Response;
+import com.kartp.quizapp.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +46,17 @@ public class QuizService {
         }
 
         return new ResponseEntity<>(questionsForUser,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> resp) {
+        Quiz quiz = quizDao.findById(id).get();
+        List<Question> questions = quiz.getQuestions();
+        int score=0,i=0;
+        for(Response response:resp){
+            if(response.getResponse().equals(questions.get(i).getRightAnswer()))
+                score=score+1;
+            i++;
+        }
+        return new ResponseEntity<>(score,HttpStatus.OK);
     }
 }

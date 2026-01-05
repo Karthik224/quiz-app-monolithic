@@ -2,6 +2,7 @@ package com.kartp.quizapp.controller;
 
 import com.kartp.quizapp.model.Question;
 import com.kartp.quizapp.model.QuestionWrapper;
+import com.kartp.quizapp.model.Response;
 import com.kartp.quizapp.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,5 +29,10 @@ public class QuizController {
     @GetMapping("get/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(@PathVariable Integer id){
         return quizService.getQuestions(id);
+    }
+
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer> submitQuiz(@PathVariable Integer id, @RequestBody List<Response> resp){
+        return quizService.calculateResult(id,resp);
     }
 }
